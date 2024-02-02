@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "174141939913",
+    "project_id": "pet-village-dubai",
+    "storage_bucket": "pet-village-dubai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174141939913:android:d01f68bcadb094bcceed18",
+        "android_client_info": {
+          "package_name": "ae.petshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174141939913-m8ugoub9gr63h7sejs0pp82f1nc64ojb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfdzMLxBsUm45Ujq-knGgSVvUE7X40Bak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174141939913-m8ugoub9gr63h7sejs0pp82f1nc64ojb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174141939913:android:bb3390b7668b5524ceed18",
+        "android_client_info": {
+          "package_name": "ae.petvillage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174141939913-m8ugoub9gr63h7sejs0pp82f1nc64ojb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfdzMLxBsUm45Ujq-knGgSVvUE7X40Bak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174141939913-m8ugoub9gr63h7sejs0pp82f1nc64ojb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

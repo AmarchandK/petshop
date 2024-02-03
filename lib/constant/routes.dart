@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
-  static final key = GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
   static push({
     required var screen,

@@ -40,6 +40,31 @@ class LoginService {
     }
   }
 
+  static Future<void> forgotPassword(
+      {required Map<String, dynamic> body, required String uid}) async {
+    String encode = base64Encode(utf8.encode('$username:$password'));
+    String basicAuth = 'Basic $encode';
+    try {
+      http.Response response = await http.post(
+        Uri.parse('$apiUrlToFetchId/$uid'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': basicAuth,
+        },
+        body: jsonEncode(body),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = jsonDecode(response.body);
+
+        print("forgot password data is $data");
+      } else {
+        throw Exception('Failed to login with error ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to login with error $e');
+    }
+  }
+
   static Future<Address?> fetchCustomerDetails({
     required String email,
     required bool isSwitch,

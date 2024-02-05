@@ -171,10 +171,17 @@ class _LoginViewState extends State<LoginView> {
                           color: AppColors.primary,
                         ),
                         const Spacer(),
-                        Common.text(
-                          text: "Forgot Password?",
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.primary,
+                        TextButton(
+                          onPressed: () {
+                            _loginController.forgotPassword();
+                          },
+                          child: Text(
+                            'Forgot Password',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w400),
+                          ),
                         ),
                       ],
                     ),

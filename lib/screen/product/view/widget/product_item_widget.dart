@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -18,7 +17,7 @@ class ProductItemWidget extends StatefulWidget {
   const ProductItemWidget({
     super.key,
     required this.product,
-    required this.isFavorite,
+    required this.isFavorite
   });
   final bool isFavorite;
   final ProductElement product;
@@ -34,16 +33,11 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-        border: Border.all(
-          color: Colors.grey,
-          width: 0.5,
-        ),
+        border: Border.all(color: Colors.grey, width: 0.5),
       ),
       child: Stack(
         children: [
@@ -75,7 +69,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                   maxLines: 2,
                   color: Colors.black,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.bold
                 ),
               ),
               // Common.text(

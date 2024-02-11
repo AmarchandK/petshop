@@ -19,7 +19,7 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-  final controller = Get.put(CartController());
+  final controller = Get.find<CartController>();
   final homeController = Get.put(HomeController());
   String country = '';
   String userId = '';

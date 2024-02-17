@@ -244,6 +244,12 @@ class _CartViewState extends State<CartView> {
                             color: AppColors.primary,
                             thickness: .5,
                           ),
+                          PaymentTypeWidget(controller: controller,value: 1,title: 'Cash on Delivery',),
+                          PaymentTypeWidget(controller: controller,value: 2,title: 'Credit/Debit/ATM Card',),
+                           Divider(
+                            color: AppColors.primary,
+                            thickness: .5,
+                          ),
                           SizedBox(height: Responsive.height * 1),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -274,6 +280,7 @@ class _CartViewState extends State<CartView> {
                               int total =
                                   ((obj.subTotalAmount + 11.6).round() * 100)
                                       .toInt();
+                               controller.selectedValue.value ==1?controller.updateOrderToServer(cartItems:cartItems ):        
                               controller.createPaymentIntent(
                                 price: total.toString(),
                                 cartItems: cartItems,
@@ -290,6 +297,42 @@ class _CartViewState extends State<CartView> {
             ),
           ),
         );
+      },
+    );
+  }
+}
+
+class PaymentTypeWidget extends StatelessWidget {
+  const PaymentTypeWidget({
+    super.key,
+    required this.controller, required this.value, required this.title,
+  });
+
+  final CartController controller;
+  final int value;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+       contentPadding: EdgeInsets.zero,
+      leading: Obx(
+        () => Radio(
+          activeColor:  AppColors.primary,
+          value: value,
+          groupValue: controller.selectedValue.value,
+          onChanged: (value) {
+            controller.updateSelectedValue(value!);
+          },
+        ),
+      ),
+      title:  Text(title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+            color: AppColors.primary,
+          ),),
+      onTap: () {
+        controller.updateSelectedValue(value);
       },
     );
   }

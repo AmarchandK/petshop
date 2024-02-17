@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:petvillage/screen/cart/view/cart_view.dart';
 import 'package:petvillage/screen/home/view/home_view.dart';
-import '../../profile/view/profile_view.dart';
-import '../../wishlist/view/wishlist_view.dart';
+import '../../../profile/view/profile_view.dart';
+import '../../../wishlist/view/wishlist_view.dart';
 
 class NavController extends GetxController {
   bool isLoading = false;

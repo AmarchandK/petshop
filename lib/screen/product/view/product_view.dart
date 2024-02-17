@@ -128,7 +128,9 @@ class _ProductViewState extends State<ProductView> {
                       itemCount: obj.products.length + (isLoadingMore ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (index < obj.products.length) {
+                          
                           final product = obj.products[index];
+                          
                           bool isFavorite = snapshot.data
                                   ?.data()?["items"]
                                   .firstWhere(

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:petvillage/screen/home/model/address_model.dart';
 import '../../../constant/const_string.dart';
-import '../../nav/view/nav_view.dart';
+import '../../checkout/nav/view/nav_view.dart';
 
 class LoginService {
   static String apiUrl =

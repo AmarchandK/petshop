@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import '../../nav/controller/nav_controller.dart';
+import '../../checkout/nav/controller/nav_controller.dart';
 
 class PlacedView extends StatefulWidget {
   const PlacedView({super.key});

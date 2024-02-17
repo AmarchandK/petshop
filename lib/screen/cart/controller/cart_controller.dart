@@ -15,7 +15,12 @@ class CartController extends GetxController {
   bool isCartLoading = false;
   List<CartItemModel> cartItems = [];
   double subTotalAmount = 0.0;
+  RxInt selectedValue = 1.obs; 
 
+
+   void updateSelectedValue(int value) {
+    selectedValue.value = value;
+  }
   List<CartItemModel> getCartItems({QuerySnapshot? snap}) {
     subTotalAmount = 0.0;
     cartItems.clear();

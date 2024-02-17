@@ -3,9 +3,9 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:petvillage/constant/colors_file.dart';
-import 'package:petvillage/screen/nav/controller/nav_controller.dart';
+import 'package:petvillage/screen/checkout/nav/controller/nav_controller.dart';
 
-import '../../../constant/responsive.dart';
+import '../../../../constant/responsive.dart';
 
 class NavView extends StatefulWidget {
   const NavView({super.key});

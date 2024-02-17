@@ -17,8 +17,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
-  final _userNameController = TextEditingController();
-  final _passwordController = TextEditingController();
+
   final _loginController = Get.put(LoginController());
   String errorText = "Password or username is incorrect";
 
@@ -63,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
                     Common.textFormField(
                       context: context,
                       hintText: "",
-                      controller: _userNameController,
+                      controller: obj.userNameController,
                       keyboardType: TextInputType.emailAddress,
                       obscureText: false,
                       suffixIcon: null,
@@ -90,11 +89,13 @@ class _LoginViewState extends State<LoginView> {
                           onTap: () {
                             _loginController.onPasswordVisibility();
                           },
-                          controller: _passwordController,
+                          controller: obj.passwordController,
                           keyboardType: TextInputType.text,
                           obscureText: !_loginController.isPasswordVisible,
                           validator: (value) {
                             if (value!.isEmpty) {
+                          obj.isForgot.value = true;
+
                               return "Please enter your password";
                             }
                             return null;
@@ -142,7 +143,7 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     Common.extraSmallSizedBox(),
                     Visibility(
-                      visible: _loginController.isErrorMessage,
+                      visible: _loginController.isErrorMessage.value,
                       child: Center(
                         child: Text(
                           errorText,
@@ -171,9 +172,11 @@ class _LoginViewState extends State<LoginView> {
                           color: AppColors.primary,
                         ),
                         const Spacer(),
-                        TextButton(
+                    obj.isForgot.value ==true || obj.isErrorMessage.value==true ?TextButton(
                           onPressed: () {
-                            _loginController.forgotPassword();
+                       obj.sendMail();
+                             Common.snackBar(title:'Change password' , message: 'password reset link is send to your registered email-id');
+                            // _loginController.forgotPassword();
                           },
                           child: Text(
                             'Forgot Password',
@@ -182,7 +185,7 @@ class _LoginViewState extends State<LoginView> {
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w400),
                           ),
-                        ),
+                        ):Container(),
                       ],
                     ),
                     Common.button(
@@ -192,8 +195,8 @@ class _LoginViewState extends State<LoginView> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           _loginController.login(
-                            user: _userNameController.text,
-                            pas: _passwordController.text,
+                            user: obj.userNameController.text,
+                            pas: obj.passwordController.text,
                           );
                         }
                       },

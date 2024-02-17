@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../../../constant/const_string.dart';
 import '../../../constant/routes.dart';
-import '../../nav/view/nav_view.dart';
+import '../../checkout/nav/view/nav_view.dart';
 
 class SignupService {
   static String apiUrl = 'https://petvillagedubai.com/wc-api/v3/customers';

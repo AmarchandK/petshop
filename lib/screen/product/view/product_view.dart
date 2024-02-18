@@ -74,7 +74,9 @@ class _ProductViewState extends State<ProductView> {
               IconButton(
                 onPressed: () {
                   Routes.push(
-                    screen: const CartView(),
+                    screen: CartView(callback: () {
+                      controller.getProductsByCategory();
+                    }),
                     action: (_) {},
                   );
                 },

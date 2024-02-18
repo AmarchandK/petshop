@@ -12,8 +12,8 @@ import '../../address/view/address_view.dart';
 import '../controller/cart_controller.dart';
 
 class CartView extends StatefulWidget {
-  const CartView({super.key});
-
+  const CartView({super.key, this.callback});
+  final VoidCallback? callback;
   @override
   State<CartView> createState() => _CartViewState();
 }
@@ -38,6 +38,14 @@ class _CartViewState extends State<CartView> {
         return Common.scaffold<CartController>(
           isLoading: obj.isCartLoading,
           appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                  if (widget.callback != null) {
+                    widget.callback!();
+                  }
+                },
+                icon: const Icon(Icons.arrow_back)),
             backgroundColor: Colors.white,
             title: Text(
               "Cart",

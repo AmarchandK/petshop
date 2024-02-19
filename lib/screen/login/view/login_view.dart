@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:petvillage/constant/colors_file.dart';
 import 'package:petvillage/constant/common_widget.dart';
 import 'package:petvillage/constant/responsive.dart';
+import 'package:petvillage/screen/secret_pin_auth/view/secret_pin_view.dart';
 import '../../../constant/const_string.dart';
 import '../../sign_up/view/sign_up_view.dart';
 import '../controller/login_controller.dart';
@@ -176,7 +177,9 @@ class _LoginViewState extends State<LoginView> {
                           onPressed: () {
                        obj.sendMail();
                              Common.snackBar(title:'Change password' , message: 'password reset link is send to your registered email-id');
-                            // _loginController.forgotPassword();
+                             obj.getAddress();
+                            // obj.forgotPassword(obj.address?.id.toString());
+                            Get.to(const SecretPinView());
                           },
                           child: Text(
                             'Forgot Password',
@@ -193,6 +196,7 @@ class _LoginViewState extends State<LoginView> {
                       fontSize: 20,
                       text: "Log In",
                       onPressed: () {
+                             obj.getAddress();
                         if (_formKey.currentState!.validate()) {
                           _loginController.login(
                             user: obj.userNameController.text,

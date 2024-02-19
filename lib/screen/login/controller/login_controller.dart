@@ -5,38 +5,38 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
-import 'package:petvillage/constant/const_string.dart';
 import '../service/login_service.dart';
+import 'package:petvillage/screen/home/model/address_model.dart' as petvillage_address;
 
 class LoginController extends GetxController {
   bool isPasswordRemember = false;
   bool isLoading = false;
   RxBool isErrorMessage = false.obs;
   RxBool isForgot = false.obs;
-    final userNameController = TextEditingController();
+  final userNameController = TextEditingController();
   final passwordController = TextEditingController();
   final Random _random = Random();
   final RxInt randomNumber = 0.obs;
-  
-
+ petvillage_address.Address? address;
   void generateRandomNumber() {
-    
-   randomNumber.value = _random.nextInt(9000) + 1000;
+    randomNumber.value = _random.nextInt(9000) + 1000;
     update();
   }
+
   void onRememberPassword(bool value) {
     isPasswordRemember = value;
     update();
   }
 
-  void forgotPassword() async {
-    final String? uid = await ConstString.getId();
+  void forgotPassword(String? uid,String newPassword) async {
+  print('======$uid===uid');
     if (uid != null) {
-      LoginService.forgotPassword( uid: uid, body: {});
+      LoginService.forgotPassword(uid: uid, body: {
+        "password":newPassword
+      });
       update();
     }
   }
- 
 
   Future<void> login({required String user, required String pas}) async {
     try {
@@ -58,32 +58,39 @@ class LoginController extends GetxController {
     isPasswordVisible = !isPasswordVisible;
     update();
   }
-void sendMail() async {
-generateRandomNumber();
 
-String username = 'binuprasad2000@gmail.com';
-String password = 'adhzcatlwmmzxahz';
+  void sendMail() async {
+    generateRandomNumber();
 
-  final smtpServer = gmail(username, password);
-  final equivalentMessage = Message()
-  ..from = Address(username, 'Pet shop')
-  ..recipients.add(userNameController.text)
-  // ..ccRecipients.addAll([Address(userNameController.text), userNameController.text])
-  // ..bccRecipients.add(userNameController.text)
-  ..subject = 'Reset  password :: 😀 :: ${DateTime.now()}'
-  ..text = 'This is your verification number:${randomNumber.value.toString()}';
-  // ..html = "<h1>Test</h1>\n<p>This is pet shop reset password</p>";
-  update();
-  try{
-  print('succes');
-print('$randomNumber randum');
-  await send(equivalentMessage, smtpServer);
+    String username = 'binuprasad2000@gmail.com';
+    String password = 'adhzcatlwmmzxahz';
 
-  }catch(e){
-    if(kDebugMode){
-      print(e.toString());
+    final smtpServer = gmail(username, password);
+    final equivalentMessage = Message()
+      ..from = Address(username, 'Pet shop')
+      ..recipients.add(userNameController.text)
+      ..subject = 'Reset  password :: 🐶 :: ${DateTime.now()}'
+      ..text =
+          'This is your verification number:${randomNumber.value.toString()}';
+    update();
+    try {
+      print('succes');
+      print('$randomNumber randum');
+      await send(equivalentMessage, smtpServer);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
   }
 
+
+    Future<void> getAddress() async {
+    address = await LoginService.fetchCustomerDetails(
+      email: userNameController.text,
+      isSwitch: false,
+    );
+    print('------- address${address?.id}');
+    update();
   }
 }

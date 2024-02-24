@@ -55,15 +55,15 @@ class _SecretPinViewState extends State<SecretPinView> {
                 Center(
                   child: Pinput(
                     validator: (s) {
-                      print('$s ----s');
-                      print(loginController.randomNumber.value.toString());
+                      // print('$s ----s');
+                      // print(loginController.randomNumber.value.toString());
                       return s == loginController.randomNumber.value.toString()
                           ? null
                           : 'Pin is incorrect';
                     },
                     pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                     showCursor: true,
-                    onCompleted: (pin) => print(pin),
+                    // onCompleted: (pin) => print(pin),
                   ),
                 ),
                 SizedBox(height: Responsive.height * 2),
@@ -93,8 +93,8 @@ class _SecretPinViewState extends State<SecretPinView> {
                             text: ' Resend',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              color: AppColors.textColor,
-                              fontSize: 18
+                              color: AppColors.lightBlue,
+                              fontSize: 16
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () => loginController.sendMail(),

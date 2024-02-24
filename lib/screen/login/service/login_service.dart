@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:petvillage/screen/home/model/address_model.dart';
-import 'package:petvillage/screen/login/model/user_details_model.dart';
 import 'package:petvillage/screen/login/view/login_view.dart';
 import '../../../constant/const_string.dart';
 import '../../checkout/nav/view/nav_view.dart';

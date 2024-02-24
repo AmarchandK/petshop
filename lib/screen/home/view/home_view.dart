@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:marquee/marquee.dart';
 import 'package:petvillage/constant/colors_file.dart';
 import 'package:petvillage/constant/common_widget.dart';
+import 'package:petvillage/screen/cart/controller/cart_controller.dart';
 import 'package:petvillage/screen/search/view/search_view.dart';
 import '../../../constant/const_string.dart';
 import '../../../constant/responsive.dart';
@@ -24,6 +25,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final homeController = Get.put(HomeController());
+  final cartController = Get.put(CartController());
   final _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 

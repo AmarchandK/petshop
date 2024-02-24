@@ -34,7 +34,7 @@ class _ProductViewState extends State<ProductView> {
     userId = Get.find<HomeController>().userId;
     controller.getProductsByCategory();
     scrollController.addListener(_scrollListener);
-  }
+      }
 
   void _scrollListener() {
     if (!isLoadingMore &&
@@ -74,7 +74,7 @@ class _ProductViewState extends State<ProductView> {
               IconButton(
                 onPressed: () {
                   Routes.push(
-                    screen: const CartView(),
+                    screen:  CartView(callback: controller.getProductsByCategory, ),
                     action: (_) {},
                   );
                 },
@@ -128,9 +128,9 @@ class _ProductViewState extends State<ProductView> {
                       itemCount: obj.products.length + (isLoadingMore ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (index < obj.products.length) {
-                          
+
                           final product = obj.products[index];
-                          
+
                           bool isFavorite = snapshot.data
                                   ?.data()?["items"]
                                   .firstWhere(
@@ -158,7 +158,7 @@ class _ProductViewState extends State<ProductView> {
                                 },
                               );
                             },
-                            child: ProductItemWidget(
+                            child: ProductItemWidget( 
                               product: product,
                               isFavorite: isFavorite,
                             ),

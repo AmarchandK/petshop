@@ -34,7 +34,7 @@ class LoginController extends GetxController {
       LoginService.forgotPassword(uid: uid, body: {
         "password":newPassword
       });
-      update();
+            update();
     }
   }
 

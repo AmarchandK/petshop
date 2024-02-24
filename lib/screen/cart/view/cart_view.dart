@@ -12,23 +12,24 @@ import '../../address/view/address_view.dart';
 import '../controller/cart_controller.dart';
 
 class CartView extends StatefulWidget {
-  const CartView({super.key});
-
-  @override
+  const CartView({super.key, this.callback});
+final VoidCallback? callback;
+  @override 
   State<CartView> createState() => _CartViewState();
 }
 
 class _CartViewState extends State<CartView> {
-  final controller = Get.put(CartController());
+  final controller = Get.find<CartController>();
   final homeController = Get.put(HomeController());
   String country = '';
   String userId = '';
 
-  @override
+  @override 
   void initState() {
-    super.initState();
+        super.initState();
     userId = homeController.userId;
     controller.getCartItems();
+
   }
 
   @override
@@ -38,6 +39,14 @@ class _CartViewState extends State<CartView> {
         return Common.scaffold<CartController>(
           isLoading: obj.isCartLoading,
           appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                  if (widget.callback != null) {
+                    widget.callback!();
+                  }
+                },
+                icon: const Icon(Icons.arrow_back)),
             backgroundColor: Colors.white,
             title: Text(
               "Cart",
@@ -438,7 +447,7 @@ class _CartItemState extends State<CartItem> {
                               icon: const Icon(Icons.add),
                             ),
                           ],
-                        ),
+                        ), 
                       ),
                     ],
                   ),

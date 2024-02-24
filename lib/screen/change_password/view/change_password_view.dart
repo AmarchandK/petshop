@@ -81,7 +81,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                           horizontal: Responsive.width * 3,
                         ),
                         labelStyle: TextStyle(color: AppColors.primary),
-                        hintText: "Password",
+                        hintText: "New Password",
                         hintStyle: TextStyle(
                           fontSize: 14,
                           fontFamily: GoogleFonts.tajawal().fontFamily,
@@ -117,7 +117,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                 ),
                 Common.extraSmallSizedBox(),
                 Common.text(
-                  text: "New Password",
+                  text: "Re-Enter Password",
                   fontWeight: FontWeight.w400,
                   color: AppColors.primary,
                   fontSize: 14,

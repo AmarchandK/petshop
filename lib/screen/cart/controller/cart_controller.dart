@@ -52,7 +52,7 @@ class CartController extends GetxController {
         .collection('items')
         .doc(cartItem.id.toString())
         .update({'quantity': cartItem.quantity + 1});
-  }
+          }
 
   Future<void> cartDecrement({
     required CartItemModel cartItem,
@@ -65,14 +65,14 @@ class CartController extends GetxController {
           .collection('items')
           .doc(cartItem.id.toString())
           .delete();
-    } else {
+              } else {
       await FirebaseFirestore.instance
           .collection('cart')
           .doc(id)
           .collection('items')
           .doc(cartItem.id.toString())
           .update({'quantity': cartItem.quantity - 1});
-    }
+              }
   }
 
   Map<String, dynamic>? paymentInstance;

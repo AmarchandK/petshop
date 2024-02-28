@@ -448,10 +448,13 @@ class _ProductInnerViewState extends State<ProductInnerView> {
                           CartItemModel cartItemModel = CartItemModel(
                             image: widget.product.images?.first.src ?? "",
                             name: widget.product.title ?? "",
-                            price: double.tryParse(
-                                  widget.product.salePrice ?? "",
-                                ) ??
-                                0,
+                           price: double.tryParse(
+                                    widget.product.salePrice == 0 ||
+                                          widget.  product.salePrice == null
+                                        ? widget.product.regularPrice
+                                        : widget.product.salePrice ?? "",
+                                  ) ??
+                                  0,
                             quantity: widget.product.quantity,
                             id: widget.product.id ?? 0,
                           );
@@ -490,9 +493,12 @@ class _ProductInnerViewState extends State<ProductInnerView> {
                             image: widget.product.images?.first.src ?? "",
                             name: widget.product.title ?? "",
                             price: double.tryParse(
-                                  widget.product.salePrice ?? "",
-                                ) ??
-                                0,
+                                    widget.product.salePrice == 0 ||
+                                          widget.  product.salePrice == null
+                                        ? widget.product.regularPrice
+                                        : widget.product.salePrice ?? "",
+                                  ) ??
+                                  0,
                             quantity: widget.product.quantity,
                             id: widget.product.id ?? 0,
                           );

@@ -34,8 +34,8 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   @override
   void initState() {
     super.initState();
-    product = controller.products[3];
-    log("product quantity --product of 3 ${controller.products[3].quantity}");
+    product = widget.product;
+    // log("product quantity --product of 3 ${controller.products[3].quantity}");
   }
   @override
   Widget build(BuildContext context) {
@@ -173,10 +173,13 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                                 CartItemModel cartItemModel = CartItemModel(
                                   image: product.images?.first.src ?? "",
                                   name: product.title ?? "",
-                                  price: double.tryParse(
-                                        product.salePrice ?? "",
-                                      ) ??
-                                      0,
+                                 price: double.tryParse(
+                                    product.salePrice == 0 ||
+                                            product.salePrice == null
+                                        ? product.regularPrice
+                                        : product.salePrice ?? "",
+                                  ) ??
+                                  0,
                                   quantity: product.quantity,
                                   id: product.id ?? 0,
                                 );
@@ -221,9 +224,12 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                                 image: product.images?.first.src ?? "",
                                 name: product.title ?? "",
                                 price: double.tryParse(
-                                      product.salePrice ?? "",
-                                    ) ??
-                                    0,
+                                    product.salePrice == 0 ||
+                                            product.salePrice == null
+                                        ? product.regularPrice
+                                        : product.salePrice ?? "",
+                                  ) ??
+                                  0,
                                 quantity: product.quantity,
                                 id: product.id ?? 0,
                               );

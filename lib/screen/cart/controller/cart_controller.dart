@@ -34,6 +34,8 @@ class CartController extends GetxController {
           quantity: data['quantity'],
           id: data['id'],
         );
+        log('se $subTotalAmount');
+        log('esfs ${cartItem.toJson()}');
         cartItems.add(cartItem);
         subTotalAmount += cartItem.price * cartItem.quantity;
         subTotalAmount = double.parse(subTotalAmount.toStringAsFixed(2));

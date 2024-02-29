@@ -58,8 +58,6 @@ class LoginService {
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.to(const LoginView());
         var data = jsonDecode(response.body);
-
-        print("forgot password data is $data");
       } else {
         throw Exception('Failed to login with error ${response.statusCode}');
       }

@@ -9,6 +9,7 @@ import 'package:petvillage/constant/colors_file.dart';
 import 'package:petvillage/constant/common_widget.dart';
 import 'package:petvillage/screen/cart/controller/cart_controller.dart';
 import 'package:petvillage/screen/search/view/search_view.dart';
+import 'package:petvillage/screen/wishlist/controller/wishlist_controller.dart';
 import '../../../constant/const_string.dart';
 import '../../../constant/responsive.dart';
 import '../../product/view/product_view.dart';
@@ -28,6 +29,12 @@ class _HomeViewState extends State<HomeView> {
   final cartController = Get.put(CartController());
   final _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    super.initState();
+    Get.put(CartController());
+    Get.put(WishlistController());
+  }
 
   @override
   Widget build(BuildContext context) {

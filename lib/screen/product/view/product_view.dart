@@ -77,6 +77,7 @@ class _ProductViewState extends State<ProductView> {
                     screen: CartView(
                       callback: controller.getProductsByCategory,
                     ),
+
                     action: (_) {},
                   );
                 },

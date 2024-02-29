@@ -25,8 +25,9 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final HomeController homeController = Get.put(HomeController());
-  final TextEditingController _searchController = TextEditingController();
+  final homeController = Get.put(HomeController());
+  final cartController = Get.put(CartController());
+  final _searchController = TextEditingController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void initState() {

@@ -15,6 +15,11 @@ class CartController extends GetxController {
   bool isCartLoading = false;
   List<CartItemModel> cartItems = [];
   double subTotalAmount = 0.0;
+  RxInt selectedValue = 1.obs;
+
+  void updateSelectedValue(int value) {
+    selectedValue.value = value;
+  }
 
   List<CartItemModel> getCartItems({QuerySnapshot? snap}) {
     subTotalAmount = 0.0;
@@ -29,6 +34,8 @@ class CartController extends GetxController {
           quantity: data['quantity'],
           id: data['id'],
         );
+        log('se $subTotalAmount');
+        log('esfs ${cartItem.toJson()}');
         cartItems.add(cartItem);
         subTotalAmount += cartItem.price * cartItem.quantity;
         subTotalAmount = double.parse(subTotalAmount.toStringAsFixed(2));
@@ -151,8 +158,12 @@ class CartController extends GetxController {
 
   Future<void> updateOrderToServer({
     required List<CartItemModel> cartItems,
+    int? price,
   }) async {
     try {
+      isCartLoading = true;
+      update();
+      log('inside updt ordr to server');
       final String userId = await ConstString.getId() ?? '';
       List<Map<String, dynamic>> lineItems = [];
       for (var element in cartItems) {
@@ -161,11 +172,14 @@ class CartController extends GetxController {
           "quantity": element.quantity,
         });
       }
-      int amount = paymentInstance?['amount'] ~/ 100;
+      int amount = price ?? paymentInstance?['amount'] ~/ 100;
+      log('asfds $amount');
+     
       Map<String, dynamic> data = {
-        "payment_method": "stripe",
-        "payment_method_title": "Credit / Debit Card (Stripe)",
-        "set_paid": true,
+        "payment_method": price != null ? "COD" : "stripe",
+        "payment_method_title":
+            price != null ? "COD" : "Credit / Debit Card (Stripe)",
+        "set_paid": price != null ? false : true,
         "customer_id": userId,
         "billing": Get.find<HomeController>().address?.billing?.toJson(),
         "shipping": Get.find<HomeController>().address?.shipping?.toJson(),
@@ -174,10 +188,11 @@ class CartController extends GetxController {
           {
             "method_id": "flat_rate",
             "method_title": "Flat Rate",
-            "total": "$amount",
+            "total": "10",
           }
         ]
       };
+      log('billing data : $data');
       List response = await ServerClient.post(
         ConstString.addOrder,
         data: data,
@@ -187,7 +202,7 @@ class CartController extends GetxController {
         Get.to(() => const PlacedView());
       }
     } catch (e) {
-      log('Error: $e --');
+      log('Error: updateOrderToServer $e --');
     } finally {
       isCartLoading = false;
       update();

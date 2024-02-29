@@ -4,7 +4,7 @@ class CartItemModel {
   final double price;
   int quantity;
   final int id;
-
+     
   CartItemModel({
     required this.image,
     required this.name,

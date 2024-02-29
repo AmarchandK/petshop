@@ -80,7 +80,9 @@ class _ProductInnerViewState extends State<ProductInnerView> {
                 onPressed: () {
                   Routes.push(
                     screen: const CartView(),
-                    action: (_) {},
+                    action: (_) {
+                      setState(() {});
+                    },
                   );
                 },
                 icon: const Icon(
@@ -449,7 +451,10 @@ class _ProductInnerViewState extends State<ProductInnerView> {
                             image: widget.product.images?.first.src ?? "",
                             name: widget.product.title ?? "",
                             price: double.tryParse(
-                                  widget.product.salePrice ?? "",
+                                  widget.product.salePrice == 0 ||
+                                          widget.product.salePrice == null
+                                      ? widget.product.regularPrice
+                                      : widget.product.salePrice ?? "",
                                 ) ??
                                 0,
                             quantity: widget.product.quantity,
@@ -490,7 +495,10 @@ class _ProductInnerViewState extends State<ProductInnerView> {
                             image: widget.product.images?.first.src ?? "",
                             name: widget.product.title ?? "",
                             price: double.tryParse(
-                                  widget.product.salePrice ?? "",
+                                  widget.product.salePrice == 0 ||
+                                          widget.product.salePrice == null
+                                      ? widget.product.regularPrice
+                                      : widget.product.salePrice ?? "",
                                 ) ??
                                 0,
                             quantity: widget.product.quantity,

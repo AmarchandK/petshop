@@ -62,8 +62,8 @@ class LoginController extends GetxController {
   void sendMail() async {
     generateRandomNumber();
 
-    String username = 'binuprasad2000@gmail.com';
-    String password = 'adhzcatlwmmzxahz';
+    String username = 'petvillagedxb@gmail.com';
+    String password = 'wwummzqcxuddrigg';
 
     final smtpServer = gmail(username, password);
     final equivalentMessage = Message()

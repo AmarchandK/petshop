@@ -80,7 +80,7 @@ class ProductInnerViewController extends GetxController {
         } else {
           await productDoc.update({
             'quantity': newQuantity,
-            'price': product.price * newQuantity,
+            'price': product.price,
           });
         }
       } else {

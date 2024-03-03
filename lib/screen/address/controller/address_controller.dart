@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:petvillage/constant/common_widget.dart';
 import 'package:petvillage/constant/const_string.dart';
 import 'package:petvillage/constant/server_client.dart';
 import 'package:petvillage/screen/home/controller/home_controller.dart';
@@ -27,9 +29,20 @@ class AddressController extends GetxController {
       if (response.first >= 200 && response.first < 300) {
         await Get.find<HomeController>().getAddress();
         Get.back();
+        return;
       }
+      Common.snackBar(
+        title: "Something went wrong",
+        message: "Couldn't update the details",
+        backgroundColor: Colors.red,
+      );
     } catch (e) {
       log("error is $e");
+      Common.snackBar(
+        title: "Something went wrong",
+        message: "Couldn't update the details",
+        backgroundColor: Colors.red,
+      );
     } finally {
       isLoading = false;
       update();

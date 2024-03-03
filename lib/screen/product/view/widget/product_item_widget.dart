@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
@@ -18,32 +17,33 @@ class ProductItemWidget extends StatefulWidget {
   const ProductItemWidget({
     super.key,
     required this.product,
-    required this.isFavorite,
+    required this.isFavorite
   });
   final bool isFavorite;
   final ProductElement product;
-
   @override
   State<ProductItemWidget> createState() => _ProductItemWidgetState();
+  
 }
 
 class _ProductItemWidgetState extends State<ProductItemWidget> {
   final controller = Get.put(ProductController());
   final iController = Get.put(ProductInnerViewController());
-
+  late ProductElement product;
+  @override
+  void initState() {
+    super.initState();
+    product = widget.product;
+    // log("product quantity --product of 3 ${controller.products[3].quantity}");
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-        border: Border.all(
-          color: Colors.grey,
-          width: 0.5,
-        ),
+        border: Border.all(color: Colors.grey, width: 0.5),
       ),
       child: Stack(
         children: [
@@ -52,7 +52,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
             children: [
               Center(
                 child: CachedNetworkImage(
-                  imageUrl: widget.product.images?[0].src ?? "",
+                  imageUrl: product.images?[0].src ?? "",
                   height: 170,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(
@@ -71,15 +71,15 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
               const SizedBox(height: 10),
               Flexible(
                 child: Common.text(
-                  text: widget.product.title ?? "",
+                  text: product.title ?? "",
                   maxLines: 2,
                   color: Colors.black,
                   fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.bold
                 ),
               ),
               // Common.text(
-              //   text: "${widget.product.regularPrice ?? 0.00} AED",
+              //   text: "${product.regularPrice ?? 0.00} AED",
               //   color: Colors.red,
               //   fontWeight: FontWeight.bold,
               //   isLineThrough: true,
@@ -93,7 +93,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                       children: [
                         Common.text(
                           text:
-                              "${widget.product.salePrice == 0 || widget.product.salePrice == null ? widget.product.regularPrice : widget.product.salePrice} AED",
+                              "${product.salePrice == 0 || product.salePrice == null ? product.regularPrice : product.salePrice} AED",
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -111,7 +111,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                 ],
               ),
               const SizedBox(height: 10),
-              widget.product.quantity == 0
+              product.quantity == 0
                   ? Align(
                       alignment: Alignment.center,
                       child: Common.button(
@@ -119,30 +119,30 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                         buttonColor: AppColors.primary,
                         fontSize: 12,
                         buttonHeight: 40,
-                        text: widget.product.inStock == true
+                        text: product.inStock == true
                             ? "Add to cart"
                             : "Out of Stock",
                         onPressed: () {
-                          if (widget.product.inStock == true) {
+                          if (product.inStock == true) {
                             CartItemModel cartItemModel = CartItemModel(
-                              image: widget.product.images?.first.src ?? "",
-                              name: widget.product.title ?? "",
+                              image: product.images?.first.src ?? "",
+                              name: product.title ?? "",
                               price: double.tryParse(
-                                    widget.product.salePrice == 0 ||
-                                            widget.product.salePrice == null
-                                        ? widget.product.regularPrice
-                                        : widget.product.salePrice ?? "",
+                                    product.salePrice == 0 ||
+                                            product.salePrice == null
+                                        ? product.regularPrice
+                                        : product.salePrice ?? "",
                                   ) ??
                                   0,
-                              quantity: widget.product.quantity,
-                              id: widget.product.id ?? 0,
+                              quantity: product.quantity,
+                              id: product.id ?? 0,
                             );
                             iController.addToCart(
                               product: cartItemModel,
                               quantity: 1,
                             );
                             setState(() {
-                              widget.product.quantity++;
+                              product.quantity++;
                             });
                           }
                         },
@@ -163,25 +163,28 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              if (widget.product.inStock == true) {
+                              if (product.inStock == true) {
                                 CartItemModel cartItemModel = CartItemModel(
-                                  image: widget.product.images?.first.src ?? "",
-                                  name: widget.product.title ?? "",
-                                  price: double.tryParse(
-                                        widget.product.salePrice ?? "",
-                                      ) ??
-                                      0,
-                                  quantity: widget.product.quantity,
-                                  id: widget.product.id ?? 0,
+                                  image: product.images?.first.src ?? "",
+                                  name: product.title ?? "",
+                                 price: double.tryParse(
+                                    product.salePrice == 0 ||
+                                            product.salePrice == null
+                                        ? product.regularPrice
+                                        : product.salePrice ?? "",
+                                  ) ??
+                                  0,
+                                  quantity: product.quantity,
+                                  id: product.id ?? 0,
                                 );
-                                if (widget.product.quantity > 0) {
+                                if (product.quantity > 0) {
                                   log("clicked");
                                   setState(() {
-                                    widget.product.quantity--;
+                                    product.quantity--;
                                   });
-                                  if (widget.product.quantity == 0) {
+                                  if (product.quantity == 0) {
                                     iController.deleteCart(
-                                      productId: widget.product.id ?? 0,
+                                      productId: product.id ?? 0,
                                     );
                                     return;
                                   }
@@ -202,7 +205,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                               horizontal: 10,
                             ),
                             child: Common.text(
-                              text: widget.product.quantity.toString(),
+                              text: product.quantity.toString(),
                               fontSize: 18,
                               height: 2,
                               fontWeight: FontWeight.bold,
@@ -212,22 +215,25 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                           IconButton(
                             onPressed: () {
                               CartItemModel cartItemModel = CartItemModel(
-                                image: widget.product.images?.first.src ?? "",
-                                name: widget.product.title ?? "",
+                                image: product.images?.first.src ?? "",
+                                name: product.title ?? "",
                                 price: double.tryParse(
-                                      widget.product.salePrice ?? "",
-                                    ) ??
-                                    0,
-                                quantity: widget.product.quantity,
-                                id: widget.product.id ?? 0,
+                                    product.salePrice == 0 ||
+                                            product.salePrice == null
+                                        ? product.regularPrice
+                                        : product.salePrice ?? "",
+                                  ) ??
+                                  0,
+                                quantity: product.quantity,
+                                id: product.id ?? 0,
                               );
                               iController.addToCart(
                                 product: cartItemModel,
                                 quantity: 1,
                               );
                               setState(() {
-                                widget.product.quantity++;
-                              });
+                               product.quantity++;
+                             });
                             },
                             icon: const Icon(
                               Icons.add,
@@ -240,7 +246,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
             ],
           ),
           Visibility(
-            visible: widget.product.inStock == true ? false : true,
+            visible: product.inStock == true ? false : true,
             child: Positioned(
               top: 10,
               left: 0,
@@ -272,10 +278,10 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                 controller.addToFavorite(
                   userId: Get.find<HomeController>().userId,
                   data: CartItemModel(
-                    id: widget.product.id ?? 0,
-                    image: widget.product.images?[0].src ?? "",
-                    name: widget.product.title ?? "",
-                    price: double.parse(widget.product.price ?? "0.00"),
+                    id: product.id ?? 0,
+                    image: product.images?[0].src ?? "",
+                    name: product.title ?? "",
+                    price: double.parse(product.price ?? "0.00"),
                     quantity: 1,
                   ),
                 );

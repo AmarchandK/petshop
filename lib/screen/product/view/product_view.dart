@@ -74,7 +74,10 @@ class _ProductViewState extends State<ProductView> {
               IconButton(
                 onPressed: () {
                   Routes.push(
-                    screen: const CartView(),
+                    screen: CartView(
+                      callback: controller.getProductsByCategory,
+                    ),
+
                     action: (_) {},
                   );
                 },
@@ -110,64 +113,85 @@ class _ProductViewState extends State<ProductView> {
                       .doc(userId)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    return GridView.builder(
-                      controller: scrollController,
-                      padding: Common.kPadding.copyWith(
-                        top: 20,
-                        bottom: 20,
-                        right: 8,
-                        left: 8,
-                      ),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        childAspectRatio: 0.55,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                      ),
-                      itemCount: obj.products.length + (isLoadingMore ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index < obj.products.length) {
-                          final product = obj.products[index];
-                          bool isFavorite = snapshot.data
-                                  ?.data()?["items"]
-                                  .firstWhere(
-                                      (element) => element["id"] == product.id,
-                                      orElse: () => false) !=
-                              false;
-                          return GestureDetector(
-                            onTap: () {
-                              if (product.inStock == false) {
-                                Common.snackBar(
-                                  message: "Out of Stock",
-                                  title: 'Stock Status',
-                                  backgroundColor: AppColors.redColor,
-                                );
-                                return;
-                              }
-                              log("called after go");
-                              Routes.push(
-                                screen: ProductInnerView(
-                                  product: product,
-                                  isFavorite: isFavorite,
-                                ),
-                                action: (_) {
-                                  setState(() {});
-                                },
-                              );
-                            },
-                            child: ProductItemWidget(
-                              product: product,
-                              isFavorite: isFavorite,
+                    return StreamBuilder(
+                        stream: FirebaseFirestore.instance
+                            .collection('cart')
+                            .doc(userId)
+                            .collection('items')
+                            .snapshots(),
+                        builder: (context, cartSnapshot) {
+                          List<QueryDocumentSnapshot> fbCart =
+                              cartSnapshot.data?.docs ?? [];
+                          return GridView.builder(
+                            controller: scrollController,
+                            padding: Common.kPadding.copyWith(
+                              top: 20,
+                              bottom: 20,
+                              right: 8,
+                              left: 8,
                             ),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.55,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                            ),
+                            itemCount:
+                                obj.products.length + (isLoadingMore ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index < obj.products.length) {
+                                final product = obj.products[index];
+
+                                bool isFavorite = snapshot.data
+                                        ?.data()?["items"]
+                                        .firstWhere(
+                                            (element) =>
+                                                element["id"] == product.id,
+                                            orElse: () => false) !=
+                                    false;
+                                var fbCartitem = fbCart.firstWhereOrNull(
+                                    (element) =>
+                                        element.id == product.id.toString());
+                                var fbCartItemData = fbCartitem?.data() as Map?;
+                                double cartItemQty = double.tryParse(
+                                        fbCartItemData?['quantity']?.toString()??'0') ??
+                                    0;
+                                product.quantity = cartItemQty.toInt();
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (product.inStock == false) {
+                                      Common.snackBar(
+                                        message: "Out of Stock",
+                                        title: 'Stock Status',
+                                        backgroundColor: AppColors.redColor,
+                                      );
+                                      return;
+                                    }
+                                    log("called after go");
+                                    Routes.push(
+                                      screen: ProductInnerView(
+                                        product: product,
+                                        isFavorite: isFavorite,
+                                      ),
+                                      action: (_) {
+                                        setState(() {});
+                                      },
+                                    );
+                                  },
+                                  child: ProductItemWidget(
+                                    product: product,
+                                    isFavorite: isFavorite,
+                                  ),
+                                );
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
                           );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    );
+                        });
                   },
                 ),
         );

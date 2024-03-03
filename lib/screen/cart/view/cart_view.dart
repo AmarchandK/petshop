@@ -12,14 +12,14 @@ import '../../address/view/address_view.dart';
 import '../controller/cart_controller.dart';
 
 class CartView extends StatefulWidget {
-  const CartView({super.key});
-
+  const CartView({super.key, this.callback});
+  final VoidCallback? callback;
   @override
   State<CartView> createState() => _CartViewState();
 }
 
 class _CartViewState extends State<CartView> {
-  final controller = Get.put(CartController());
+  final controller = Get.find<CartController>();
   final homeController = Get.put(HomeController());
   String country = '';
   String userId = '';
@@ -34,10 +34,18 @@ class _CartViewState extends State<CartView> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CartController>(
-      builder: (obj) {
+      builder: (cartObj) {
         return Common.scaffold<CartController>(
-          isLoading: obj.isCartLoading,
+          isLoading: cartObj.isCartLoading,
           appBar: AppBar(
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                  if (widget.callback != null) {
+                    widget.callback!();
+                  }
+                },
+                icon: const Icon(Icons.arrow_back)),
             backgroundColor: Colors.white,
             title: Text(
               "Cart",
@@ -183,7 +191,7 @@ class _CartViewState extends State<CartView> {
                                 ),
                               ),
                               AutoSizeText(
-                                'AED ${obj.subTotalAmount}',
+                                'AED ${cartObj.subTotalAmount}',
                                 maxLines: 1,
                                 style: TextStyle(
                                   color: AppColors.primary,
@@ -229,7 +237,7 @@ class _CartViewState extends State<CartView> {
                                 ),
                               ),
                               AutoSizeText(
-                                'AED 1.60',
+                                'AED ${((cartObj.subTotalAmount + 10) * 5 / 100)}',
                                 maxLines: 1,
                                 style: TextStyle(
                                   color: AppColors.primary,
@@ -240,6 +248,20 @@ class _CartViewState extends State<CartView> {
                             ],
                           ),
                           SizedBox(height: Responsive.height * 1),
+                          Divider(
+                            color: AppColors.primary,
+                            thickness: .5,
+                          ),
+                          PaymentTypeWidget(
+                            controller: controller,
+                            value: 1,
+                            title: 'Cash on Delivery',
+                          ),
+                          PaymentTypeWidget(
+                            controller: controller,
+                            value: 2,
+                            title: 'Credit/Debit/ATM Card',
+                          ),
                           Divider(
                             color: AppColors.primary,
                             thickness: .5,
@@ -257,7 +279,15 @@ class _CartViewState extends State<CartView> {
                                 ),
                               ),
                               AutoSizeText(
-                                'AED ${(obj.subTotalAmount + 11.6).round()}.0',
+                                'AED ${((){
+                                  double totalWithShipping =
+                                            (cartObj.subTotalAmount + 10);
+                                        double totalWithVAT =
+                                            (totalWithShipping * 105) / 100;
+                                        int total =totalWithVAT.round();
+                                            
+                                            return total;
+                                }())}.0',
                                 maxLines: 1,
                                 style: TextStyle(
                                   color: AppColors.primary,
@@ -268,16 +298,48 @@ class _CartViewState extends State<CartView> {
                             ],
                           ),
                           SizedBox(height: Responsive.height * 3),
-                          Common.button(
-                            text: 'Proceed to Checkout',
-                            onPressed: () {
-                              int total =
-                                  ((obj.subTotalAmount + 11.6).round() * 100)
-                                      .toInt();
-                              controller.createPaymentIntent(
-                                price: total.toString(),
-                                cartItems: cartItems,
-                              );
+                          GetBuilder<HomeController>(
+                            builder: (homeObj) {
+                              return homeObj.address?.shipping?.firstName
+                                              ?.trim()
+                                              .isEmpty ==
+                                          true ||
+                                      homeObj.address?.billing?.firstName
+                                              ?.trim()
+                                              .isEmpty ==
+                                          true
+                                  ? Row(
+                                      children: [
+                                        Expanded(
+                                          child: Common.button(
+                                            text: "Add Address",
+                                            fontWeight: FontWeight.bold,
+                                            onPressed: () {
+                                              Get.to(() => const AddressView());
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Common.button(
+                                      text: 'Proceed to Checkout',
+                                      onPressed: () {
+                                        double totalWithShipping =
+                                            (cartObj.subTotalAmount + 10);
+                                        double totalWithVAT =
+                                            (totalWithShipping * 105) / 100;
+                                        int total = (totalWithVAT.round() * 100)
+                                            .toInt();
+                                        controller.selectedValue.value == 1
+                                            ? controller.updateOrderToServer(
+                                                cartItems: cartItems,
+                                                price: total ~/ 100)
+                                            : controller.createPaymentIntent(
+                                                price: total.toString(),
+                                                cartItems: cartItems,
+                                              );
+                                      },
+                                    );
                             },
                           ),
                           SizedBox(height: Responsive.height * 3),
@@ -290,6 +352,46 @@ class _CartViewState extends State<CartView> {
             ),
           ),
         );
+      },
+    );
+  }
+}
+
+class PaymentTypeWidget extends StatelessWidget {
+  const PaymentTypeWidget({
+    super.key,
+    required this.controller,
+    required this.value,
+    required this.title,
+  });
+
+  final CartController controller;
+  final int value;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Obx(
+        () => Radio(
+          activeColor: AppColors.primary,
+          value: value,
+          groupValue: controller.selectedValue.value,
+          onChanged: (value) {
+            controller.updateSelectedValue(value!);
+          },
+        ),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
+          color: AppColors.primary,
+        ),
+      ),
+      onTap: () {
+        controller.updateSelectedValue(value);
       },
     );
   }

@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:petvillage/constant/const_string.dart';
 import 'package:petvillage/screen/login/view/login_view.dart';
-import 'package:petvillage/screen/nav/view/nav_view.dart';
+import 'package:petvillage/screen/checkout/nav/view/nav_view.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});

@@ -15,7 +15,7 @@ class ProductController extends GetxController {
   onInit() {
     super.onInit();
     query = Get.arguments ?? "";
-  }
+      }
 
   List<ProductElement> products = [];
   List<ProductElement> relatedItems = [];
@@ -24,7 +24,7 @@ class ProductController extends GetxController {
     currentPage = 0;
     isLoading = true;
     update();
-    log("current page $currentPage");
+    log("current page $currentPage/$query");
     products.clear();
     Product? prod = await HomeService().getAllProductsByCategory(
       category: query,
@@ -37,7 +37,6 @@ class ProductController extends GetxController {
     isLoading = false;
     update();
   }
-
   bool isAlreadyRunning = false;
 
   Future<void> loadMoreProducts() async {

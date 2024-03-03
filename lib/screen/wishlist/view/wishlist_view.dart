@@ -17,8 +17,8 @@ class WishListView extends StatefulWidget {
 }
 
 class _WishListViewState extends State<WishListView> {
-  final controller = Get.put(WishlistController());
-  final cartCt = Get.put(CartController());
+  final WishlistController controller = Get.find<WishlistController>();
+  final CartController cartCt = Get.find<CartController>();
   @override
   Widget build(BuildContext context) {
     return Common.scaffold<WishlistController>(

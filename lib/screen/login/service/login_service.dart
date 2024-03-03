@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:petvillage/screen/home/model/address_model.dart';
+import 'package:petvillage/screen/login/view/login_view.dart';
 import '../../../constant/const_string.dart';
-import '../../nav/view/nav_view.dart';
+import '../../checkout/nav/view/nav_view.dart';
 
 class LoginService {
   static String apiUrl =
@@ -27,11 +28,36 @@ class LoginService {
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = jsonDecode(response.body);
+        print(data);
         var userEmail = data['user_email'];
         await ConstString.setName(name: data['user_display_name']);
         await ConstString.setToken(token: data['token']);
         await ConstString.setEmail(email: userEmail);
         await fetchCustomerDetails(email: userEmail, isSwitch: true);
+      } else {
+        throw Exception('Failed to login with error ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to login with error $e');
+    }
+  }
+
+  static Future<void> forgotPassword(
+      {required Map<String, dynamic> body, required String uid}) async {
+    String encode = base64Encode(utf8.encode('$username:$password'));
+    String basicAuth = 'Basic $encode';
+    try {
+      http.Response response = await http.post(
+        Uri.parse('$apiUrlToFetchId/$uid'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': basicAuth,
+        },
+        body: jsonEncode(body),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Get.to(const LoginView());
+        var data = jsonDecode(response.body);
       } else {
         throw Exception('Failed to login with error ${response.statusCode}');
       }
@@ -57,10 +83,12 @@ class LoginService {
       );
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
+        print('fetch customer detail $data');
         Address address = Address.fromJson(data[0]);
         await ConstString.setId(id: address.id.toString());
         if (address.id != null) {
           await ConstString.setLogin();
+          print("${address.id}-----address id");
           if (isSwitch) {
             Get.offAll(() => const NavView());
           }
@@ -74,4 +102,42 @@ class LoginService {
     }
     return null;
   }
+
+  // -------------- get user detail for user id ----------------
+  //   static Future<UserDetailResponse?> getUserId({
+  //   required String email,
+    
+  // }) async {
+  //   String encode = base64Encode(utf8.encode('$username:$password'));
+  //   String basicAuth = 'Basic $encode';
+
+  //   try {
+  //     http.Response response = await http.get(
+  //       Uri.parse('$apiUrlToFetchId?email=$email'),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //         'Authorization': basicAuth,
+  //       },
+  //     );
+  //     if (response.statusCode == 200) {
+  //       var data = jsonDecode(response.body);
+  //       print('fetch customer detail $data');
+  //       UserDetailResponse address = UserDetailResponse.fromJson(data[0]);
+  //       await ConstString.setId(id: address.id.toString());
+  //       if (address.id != null) {
+  //         await ConstString.setLogin();
+         
+  //         return address;
+  //       }
+  //     } else {
+  //       throw Exception('Failed to fetch customer details with error');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Failed to fetch customer details with error $e');
+  //   }
+  //   return null;
+  // }
+
+
+
 }

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:174141939913:android:d01f68bcadb094bcceed18",
         "android_client_info": {
-          "package_name": "ae.petshop"
+          "package_name": "petshop.ae"
         }
       },
       "oauth_client": [

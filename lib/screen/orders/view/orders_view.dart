@@ -47,7 +47,12 @@ class _OrdersViewState extends State<OrdersView> {
             ),
             centerTitle: true,
           ),
-          body: ListView.builder(
+          body: 
+          controller.myOrders.isEmpty?
+          const Center(
+            child: Text("No orders found"),
+          ):
+          ListView.builder(
             physics: const BouncingScrollPhysics(),
             itemCount: controller.myOrders.length,
             itemBuilder: (context, index) {

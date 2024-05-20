@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
+import 'package:petvillage/screen/profile/view/privacy_policy_view.dart';
 import '../../../constant/colors_file.dart';
 import '../../../constant/common_widget.dart';
 import '../../../constant/const_string.dart';
@@ -166,31 +167,31 @@ class _ProfileViewState extends State<ProfileView> {
               title: const Text("Points"),
               leading: const Icon(IconlyLight.activity),
             ),
-            ListTile(
-              onTap: () {},
-              title: const Text("Return & Refund"),
-              leading: const Icon(IconlyLight.ticket),
-            ),
+            // ListTile(
+            //   onTap: () {},
+            //   title: const Text("Return & Refund"),
+            //   leading: const Icon(IconlyLight.ticket),
+            // ),
+            // ListTile(
+            //   onTap: () {
+            //     // Navigator.push(
+            //     //   context,
+            //     //   MaterialPageRoute(
+            //     //     builder: (context) => const DownloadsView(),
+            //     //   ),
+            //     // );
+            //   },
+            //   title: const Text("Terms & Conditions"),
+            //   leading: const Icon(IconlyLight.shieldDone),
+            // ),
             ListTile(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const DownloadsView(),
-                //   ),
-                // );
-              },
-              title: const Text("Terms & Conditions"),
-              leading: const Icon(IconlyLight.shieldDone),
-            ),
-            ListTile(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const AccountDetailsScreen(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PrivacyPolicyPage(),
+                  ),
+                );
               },
               title: const Text("Privacy Policy"),
               leading: const Icon(IconlyLight.document),
